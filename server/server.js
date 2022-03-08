@@ -1,13 +1,19 @@
 import express from "express"
 const app = express()
-import errorHandlerMiddleware from "./middleware/error-handler.js"
-import notFoundMiddleware from "./middleware/not-found.js"
 import dotenv from "dotenv"
+dotenv.config()
+import "express-async-errors"
+
+//db connect
 import connectDB from "./db/connect.js"
+
+//routers
 import authRouter from "./routes/authRoutes.js"
 import jobsRouter from "./routes/jobsRoutes.js"
-import "express-async-errors"
-dotenv.config()
+
+//middlewares
+import errorHandlerMiddleware from "./middleware/error-handler.js"
+import notFoundMiddleware from "./middleware/not-found.js"
 
 app.use(express.json())
 
