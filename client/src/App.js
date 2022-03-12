@@ -1,16 +1,30 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
-import { Dashboard, Landing, Register, Error } from "./pages"
+import { Landing, Register, Error, ProtectedRoutes } from "./pages"
+import {
+  AddJob,
+  AllJobs,
+  Profile,
+  SharedLayout,
+  Stats,
+} from "./pages/dashboard"
 
 function App() {
   return (
     <BrowserRouter>
-      <nav>
-        <Link to='/'>Dashboard</Link>
-        <Link to='/register'>Register</Link>
-        <Link to='/landing'>Home</Link>
-      </nav>
       <Routes>
-        <Route path='/' element={<Dashboard />} />
+        <Route
+          path='/'
+          element={
+            <ProtectedRoutes>
+              <SharedLayout />
+            </ProtectedRoutes>
+          }
+        >
+          <Route index path='stats' element={<Stats />} />
+          <Route path='all-jobs' element={<AllJobs />} />
+          <Route path='add-job' element={<AddJob />} />
+          <Route path='profile' element={<Profile />} />
+        </Route>
         <Route path='/register' element={<Register />} />
         <Route path='/landing' element={<Landing />} />
         <Route path='*' element={<Error />} />
