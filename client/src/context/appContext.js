@@ -133,6 +133,7 @@ const AppProvider = ({ children }) => {
           user,
           location,
           token,
+          alertText,
         },
       })
       //local user storage
