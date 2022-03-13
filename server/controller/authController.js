@@ -49,7 +49,32 @@ const login = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, token, location: user.location })
 }
 
-const updateUser = (req, res) => {
-  res.send("update user")
+const updateUser = async (req, res) => {
+  console.log(req)
+  const { email, name, lastName, location } = req.body
+
+  if (!email || !name || !location || !lastName) {
+    throw new BadRequestError("Please provide all values")
+  }
+  console.log(req.user.userId)
+  const user = await User.findOne({ _id: req.user.userId })
+
+  user.email = email
+  user.name = name
+  user.lastName = lastName
+  user.location = location
+
+  await user.save()
+
+  // various setups
+  // in this case only id
+  // if other properties included, must re-generate
+
+  const token = user.createJWT()
+  res.status(StatusCodes.OK).json({
+    user,
+    token,
+    location: user.location,
+  })
 }
 export { register, login, updateUser }
