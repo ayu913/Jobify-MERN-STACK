@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes"
 import { BadRequestError } from "../errors/index.js"
 import Job from "../models/Jobs.js"
+import checkPermissions from "../utils/checkPermission.js"
 
 const createJob = async (req, res) => {
   const { position, company } = req.body
@@ -22,10 +23,43 @@ const getAllJobs = async (req, res) => {
 }
 
 const updateJob = async (req, res) => {
-  res.send("update job")
+  const { id: jobId } = req.params
+
+  const { company, position } = req.body
+
+  if (!company || !position) {
+    throw new BadRequestError("Please Provide All Values")
+  }
+
+  const job = await Job.findOne({ _id: jobId })
+
+  if (!job) {
+    throw new NotFoundError(`No job with id ${jobId}`)
+  }
+
+  // check permissions
+  checkPermissions(req.user, job.createdBy)
+
+  const updatedJob = await Job.findOneAndUpdate({ _id: jobId }, req.body, {
+    new: true,
+    runValidators: true,
+  })
+
+  res.status(StatusCodes.OK).json({ updatedJob })
 }
 const deleteJob = async (req, res) => {
-  res.send("delete job")
+  const { id: jobId } = req.params
+
+  const job = await Job.findOne({ _id: jobId })
+
+  if (!job) {
+    throw new CustomError.NotFoundError(`No job with id : ${jobId}`)
+  }
+
+  checkPermissions(req.user, job.createdBy)
+
+  await job.remove()
+  res.status(StatusCodes.OK).json({ msg: "Success! Job removed" })
 }
 const showStats = async (req, res) => {
   res.send("show stats")
