@@ -385,6 +385,7 @@ const AppProvider = ({ children }) => {
         setEditJob,
         deleteJob,
         showStats,
+        editJob,
       }}
     >
       {children}
