@@ -37,6 +37,7 @@ app.use(mongoSanitize())
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/jobs", authenticateUser, jobsRouter)
 
+const __dirname = path.resolve()
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")))
 
