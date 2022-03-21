@@ -28,13 +28,14 @@ if (process.env.NODE_ENV != "production") {
   app.use(morgan("dev"))
 }
 const __dirname = dirname(fileURLToPath(import.meta.url))
+// only when ready to deploy
+app.use(express.static(path.resolve(__dirname, "./client/build")))
+
 app.use(cors())
 app.use(express.json())
 app.use(helmet())
 app.use(xss())
 app.use(mongoSanitize())
-// only when ready to deploy
-app.use(express.static(path.resolve(__dirname, "./client/build")))
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/jobs", authenticateUser, jobsRouter)
