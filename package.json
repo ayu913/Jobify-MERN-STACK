@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "tsc",
     "build-client": "cd client && npm run build",
     "server": "nodemon server/server",
     "client": "npm start --prefix client",

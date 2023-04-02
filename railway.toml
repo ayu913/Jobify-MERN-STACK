@@ -1,0 +1,11 @@
+[[services]]
+  name = "frontend"
+  type = "web"
+  build = "npm run build"
+  env = { NODE_ENV = "production" }
+
+[[services]]
+  name = "backend"
+  type = "nodejs"
+  build = "npm run build"
+  env = { NODE_ENV = "production" }
